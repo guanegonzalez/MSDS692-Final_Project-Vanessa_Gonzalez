@@ -14,32 +14,15 @@ We will try to answer the following questions:
 *	What students are at risk at the start of a course to make sure we address their needs and provide support proactively?
 * Which are the main points of attrition in the CS course sequence conducive to the loss of students from the CS program or University?
 
+### Data Sets
+
+The data used was extracted from the University Database using IBM Cognos as the tool to query the database. Data from 2008 to 2018 was used. Two data sets were created; One with grades for courses in the math and CS sequences all CS students are required to take for graduation, and another set with the dates when these courses were taken. Both data sets also contained variables describing if the students graduated from CS or if they left the program. A variable was included to describe if the students graduated in four years from CS or if they changed major from the major they changed to.
+
 # EDA (Exploratory Data Analysis)
 ## Data Preparation and EDA
-First File to Run
-Open Libraries
-```
-library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library("graphics", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library("gplots", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library("dplyr")
-library("lattice", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library("data.table", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-library("datasets")
-library("readxl")
-library("stats")
-```
-Import data set
-```
-setwd("~/REGIS/Practicum I/RStudio")
-dataSet <- read_excel("./dataSet.xlsx")
-#View(dataSet)
-```
-Transform data set into data frame
-```
-dfDataSet <- as.data.frame(dataSet)
-head(dfDataSet)
-```
+
+
+
 # Analysis
 * ANOVA
 * T test etc
@@ -50,3 +33,5 @@ head(dfDataSet)
 link to video etc.
 
 images: ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+
