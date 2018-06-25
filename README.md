@@ -362,6 +362,212 @@ print(highlyCorrelated)
 ```
 [1] 13 16  5 10 14 17
 
+#### CS Students that graduated from other majors
+To determine which class was the last highes level class from the CS sequence for students that graduated from other majors but abandoned the CS program the steps below were fallowed.
+
+CS Grad Variable: 
+Yes - CS Students
+OtherMajor - Left CS -OM
+NG - Not Graduated
+
+Data from 2008-2018 and excludes current students and students that graduated from CS or that left the University.
+
+Import Data Set
+```{r}
+library(readxl)
+CourseDateData <- read_excel("CourseDateData.xlsx")
+
+library(readxl)
+CourseDateDataNoCS <- read_excel("CourseDateDataNoCS.xlsx")
+```
+
+```{r}
+summary(CourseDateDataNoCS)
+```
+
+```{r}
+str(CourseDateDataNoCS)
+```
+
+```{r}
+DataNoCS <- CourseDateDataNoCS[-(1:6)]
+str(DataNoCS)
+```
+
+```{r}
+DataNoCS$GraduationStatus <- as.factor(DataNoCS$GraduationStatus)
+DataNoCS$CsGrad <- as.factor(DataNoCS$CsGrad)
+str(DataNoCS)
+```
+
+
+```{r}
+dfCourseDatesNoCS <- as.data.frame(DataNoCS)
+```
+
+```{r}
+JustOM<-subset(dfCourseDatesNoCS, CsGrad == 'OtherMajor')
+head(JustOM)
+```
+
+```{r}
+JustOM <- JustOM[-(1:2)]
+JustOM <- JustOM[-(6)]
+JustOM <- JustOM[-(9)]
+JustOM <- JustOM[-(10)]
+JustOM <- JustOM[-(11:13)]
+str(JustOM)
+
+```
+
+Replace NA with 0
+```{r}
+JustOM[is.na(JustOM)] <- 0
+head(JustOM)
+```
+
+```{r}
+LastClassOM <- colnames(JustOM)[max.col(JustOM,ties.method="first")]
+JustOM$LastClassOM <- LastClassOM
+head(JustOM)
+```
+
+```{r}
+summary(JustOM)
+```
+
+```{r}
+library(caret)
+library(lattice)
+library(ggplot2)
+```
+
+
+```{r}
+tbLastClassOM <- table(JustOM$LastClassOM)
+tbLastClassOM
+```
+
+```{r}
+dfLastClassOM <- as.data.frame(tbLastClassOM)
+dfLastClassOM
+```
+
+```{r}
+p<-ggplot(data=dfLastClassOM, aes(x= reorder(Var1, Freq),  y=Freq)) +
+  geom_bar(stat="identity", fill="navyblue") +
+  labs(title ="Last Highest CS Course Taken by Other Major Students", x = "Course", y = "Frequency") +
+  ylim(0,45) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  geom_text(aes(label = Freq), hjust=-.5 , position = position_dodge(width = 1),inherit.aes = TRUE) +
+  coord_flip()
+p
+```
+#### CS Students that left the University
+To determine which class was the last highes level class from the CS sequence for students that abandoned the CS program the steps below were fallowed.
+
+CS Grad variable: 
+Yes - CS Students
+OtherMajor - Left CS
+NG - Not Graduated
+
+Data from 2008-2018 and excludes current students and students that graduated from CS.
+
+Import Data Set
+```{r}
+library(readxl)
+CourseDateData <- read_excel("CourseDateData.xlsx")
+
+library(readxl)
+CourseDateDataNoCS <- read_excel("CourseDateDataNoCS.xlsx")
+```
+
+```{r}
+summary(CourseDateDataNoCS)
+```
+
+```{r}
+str(CourseDateDataNoCS)
+```
+
+```{r}
+DataNoCS <- CourseDateDataNoCS[-(1:6)]
+str(DataNoCS)
+```
+
+```{r}
+DataNoCS$GraduationStatus <- as.factor(DataNoCS$GraduationStatus)
+DataNoCS$CsGrad <- as.factor(DataNoCS$CsGrad)
+str(DataNoCS)
+```
+
+
+```{r}
+dfCourseDatesNoCS <- as.data.frame(DataNoCS)
+```
+
+```{r}
+JustNG<-subset(dfCourseDatesNoCS, CsGrad == 'NG')
+head(JustNG)
+```
+```{r}
+JustNG <- JustNG[-(1:2)]
+JustNG <- JustNG[-(6)]
+JustNG <- JustNG[-(9)]
+JustNG <- JustNG[-(10)]
+JustNG <- JustNG[-(11:13)]
+str(JustNG)
+```
+
+
+Replace NA with 0
+```{r}
+JustNG[is.na(JustNG)] <- 0
+head(JustNG)
+```
+
+```{r}
+LastClassNG <- colnames(JustNG)[max.col(JustNG,ties.method="first")]
+JustNG$LastClassNG <- LastClassNG
+head(JustNG)
+```
+
+```{r}
+summary(JustNG)
+```
+
+```{r}
+library(caret)
+library(lattice)
+library(ggplot2)
+```
+
+
+```{r}
+tbLastClassNG <- table(JustNG$LastClassNG)
+tbLastClassNG
+```
+
+```{r}
+dfLastClassNG <- as.data.frame(tbLastClassNG)
+dfLastClassNG
+```
+
+```{r}
+p<-ggplot(data=dfLastClassNG, aes(x= reorder(Var1, Freq),  y=Freq)) +
+  geom_bar(stat="identity", fill="mediumblue") +
+  labs(title ="Last Highest CS Course Taken by NG Students", x = "Course", y = "Frequency") +
+  ylim(0,45) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  geom_text(aes(label = Freq), hjust=-.5 , position = position_dodge(width = 1),inherit.aes = TRUE) +
+  coord_flip()
+p
+```
+
+
+
+
+
 # Analysis
 ## Building the Models in R
 Several Libraries were used to perform this task:
