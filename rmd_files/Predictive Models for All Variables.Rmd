@@ -1,0 +1,170 @@
+---
+title: "Regression Classification Trees and Random Forest"
+author: "Vanessa Gonzalez"
+date: "`r format(Sys.Date())`"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+Open libraries
+```{r}
+library("mlbench")
+library("dplyr")
+library("caret")
+library("randomForest")
+library("lattice")
+library("ggplot2")
+library("rpart")
+library("e1071")
+library("caret", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+```
+
+
+##Partitions Creation
+```{r}
+head(dfDataSet4YGImpute)
+```
+The RandomForest library does not accept numbers or "_" in columng titles so the column titles need to be modified.
+```{r}
+colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
+head(dfDataSet4YGImpute)
+```
+Parrtitions created with 80% of data for training and 20% of data for testing.
+```{r}
+inTraining <- createDataPartition(dfDataSet4YGImpute$FourYG, p = 0.80, list = FALSE)
+training <- dfDataSet4YGImpute[inTraining, ]
+testing <- dfDataSet4YGImpute[-inTraining, ]
+```
+```{r}
+training
+```
+
+```{r}
+testing
+```
+
+##Regresion Partition with method "class".
+```{r}
+FourYG.rp = rpart(FourYG ~ ., data=training, method = "class")
+FourYG.rp
+```
+Display CP table for Fitted Rpart Object.
+The main variables used in this classification tree were: CSCI206, CSCI403, CSCI341, and CSCI406.
+```{r}
+printcp(FourYG.rp)
+```
+Plot CP.
+```{r}
+plotcp(FourYG.rp)
+```
+To look at the importance of variables in the regression partition with method "class".
+```{r}
+summary(FourYG.rp)
+```
+Plot of classification Tree
+```{r}
+plot(FourYG.rp, uniform=TRUE, branch=.3, margin=0.2)
+text(FourYG.rp, all=TRUE, use.n = TRUE)
+```
+Utilizing the regression classification tree model the results for the testing set are below.
+```{r}
+predictions = predict(FourYG.rp, testing, type="class")
+table(testing$FourYG, predictions)
+
+```
+
+A confusion matrix is created to compare prediction results with testing results.
+```{r}
+library(caret)
+confusionMatrix(table(predictions, testing$FourYG))
+```
+
+```{r}
+min(FourYG.rp$cptable[,"xerror"])
+```
+```{r}
+which.min(FourYG.rp$cptable[,"xerror"])
+```
+Prune the tree to increase accuracy.
+Get the cost complecity parameter of the record
+```{r}
+FourYG.cp = FourYG.rp$cptable[3,"CP"]
+FourYG.cp
+
+```
+```{r}
+prune.tree = prune(FourYG.rp, cp= FourYG.cp)
+```
+```{r}
+plot(prune.tree, margin= 0.1)
+text(prune.tree, all=TRUE , use.n=TRUE)
+```
+Prune tree.
+```{r}
+prune.tree = prune(FourYG.rp, cp = FourYG.cp)
+predictions.prune = predict(prune.tree, testing, type="class")
+table(testing$FourYG, predictions.prune)
+
+```
+Confusion matrix for punned tree.
+```{r}
+confusionMatrix(table(predictions.prune, testing$FourYG))
+```
+## Random Forest Method
+
+```{r}
+FourYG.rf <- randomForest(FourYG ~One.CSCI101+One.MATH111+Two.CSCI261+Two.MATH112+Two.MATH201+Three.CSCI262+Three.MATH213+Four.CSCI341+Four.CSCI358+Four.MATH225+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Seven.CSCI370+Eight.CSCI400+Eight.CSCI442  , data = training)
+FourYG.rf
+```
+
+```{r}
+FourYG.rf.prediction <- predict(FourYG.rf, testing)
+table(FourYG.rf.prediction, testing$FourYG)
+```
+
+To determine variable imortance.
+```{r}
+importance(FourYG.rf)
+```
+Plot for variable importance
+
+```{r}
+varImpPlot(FourYG.rf)
+```
+
+
+```{r}
+confusionMatrix(table(FourYG.rf.prediction, testing$FourYG))
+```
+## Logistic Regression Method for Variable Importance
+A different method was tried to confirm the variable importance obtained through Random Forest. The results were very similar.
+```{r}
+# Template code
+# Build Logit Model on Training Dataset
+
+FourYG.lr <- glm(FourYG ~One.CSCI101+One.MATH111+Two.CSCI261+Two.MATH112+Two.MATH201+Three.CSCI262+Three.MATH213+Four.CSCI341+Four.CSCI358+Four.MATH225+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Seven.CSCI370+Eight.CSCI400+Eight.CSCI442, family= "binomial", data = training)
+FourYG.lr
+
+# Predict Y on Test Dataset
+predictedY <- predict(FourYG.lr, testing, type="response") 
+```
+
+
+Check prediction
+```{r}
+predictedY.rf <- predict(FourYG.rf, testing, type="response") 
+predictedY.rf
+```
+Plot prediction
+```{r}
+plot(predictedY.rf, col = "navy blue")
+```
+
+For a list of importance of variables
+```{r}
+gbmImp <- varImp(FourYG.rf, scale = FALSE)
+gbmImp
+```
+
+

@@ -1,1 +1,144 @@
+---
+title: "Exploratory Data Analysis (EDA) for Four Year Graduation"
+author: "Vanessa Gonzalez"
+date: "`r format(Sys.Date())`"
+output:
+  pdf_document: default
+  html_document:
+    keep_md: yes
+---
+
+## Data Preparation and EDA
+First File to Run
+Open Libraries
+```{r}
+library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("graphics", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("gplots", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("dplyr")
+library("lattice", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("data.table", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("datasets")
+library("readxl")
+library("stats")
+```
+Import data set
+```{r}
+setwd("~/REGIS/Practicum I/RStudio")
+dataSet <- read_excel("./dataSet.xlsx")
+#View(dataSet)
+```
+Transform data set into data frame
+```{r}
+dfDataSet <- as.data.frame(dataSet)
+head(dfDataSet)
+```
+```{r}
+head(dfDataSet)
+```
+
+```{r}
+summary(dfDataSet)
+```
+Transform Variable's type to the appropriate data type
+```{r}
+dfDataSet[1] <- lapply(dfDataSet[1], as.integer)
+dfDataSet[3] <- lapply(dfDataSet[3], as.numeric)
+dfDataSet[8:24] <- lapply(dfDataSet[8:24], as.numeric)
+dfDataSet[2] <- lapply(dfDataSet[2], as.factor)
+dfDataSet[4:7] <- lapply(dfDataSet[4:7], as.factor)
+str(dfDataSet)
+```
+```{r}
+summary(dfDataSet)
+```
+Transform data frame into a table
+```{r}
+tbDataSet <- data.table(dfDataSet)
+tbDataSet
+
+```
+Create a table for variable "GraduationStatus"
+```{r}
+tb <- table(dfDataSet$GraduationStatus)
+tb
+
+```
+Create table with percentages of total
+```{r}
+tb.prop <- dfDataSet$GraduationStatus %>%
+   table() %>%
+   prop.table() %>% {. * 100} %>% 
+   round(2)
+
+tb.prop
+```
+Create a Pie chart
+```{r}
+pie(tb, main = "CS Students Status that Started 2008-2014", col = c("Light Blue","Navy Blue","Dark Orange"))
+```
+Create a Bar chart
+```{r}
+barplot(tb, col = "navy blue", ylim=c(0,400),main = "Computer Science Students who Started the Program (2008-2014)")
+```
+
+Create a Bar plot where the "graduated"" students are divided into CS and Other Major students
+```{r}
+ggplot(dfDataSet) + 
+  geom_bar(aes(x = factor(GraduationStatus), fill = CsGrad), position = 'dodge') +
+  xlab('Graduation Status') + ylab('Frequency')
+```
+Create a plot to represent the CS students that have graduated in 4 years
+```{r}
+ggplot(dfDataSet) + 
+  geom_bar(aes(x = factor(GraduationStatus), fill = dfDataSet$"4YG"), position = 'dodge') +
+  xlab('Graduation Status') + ylab('Frequency')
+```
+Create a table of numbers and percetages of students that graduate in 4 years
+```{r}
+tb4YG <- table(dfDataSet$"4YG")
+tb4YGpercent <- prop.table(tb4YG)
+tb4YGpercent
+cbind(tb4YG,prop.table(tb4YG))
+```
+Create a Pie Chart for Four-year graduation rate
+```{r}
+pie(tb4YG, main = "CS Students that Graduated in Four Years", col = c("Light Blue","Navy Blue","Dark Orange"))
+```
+Create a Bar chart for Four-year graduation rate
+```{r}
+barplot(tb4YGpercent, col = "navy blue", ylim=c(0,1),main = "Four Year Graduation Rate for CS Students who Started on 2008-2014")
+```
+Create a table of numbers and percetages of students that graduate in 5 years
+```{r}
+tb5YG <- table(dfDataSet$"5YG")
+tb5YGpercent <- prop.table(tb5YG)
+tb5YGpercent
+cbind(tb5YG,prop.table(tb5YG))
+```
+Create a Pie Chart for Five-year graduation rate
+```{r}
+pie(tb5YG, main = "CS Students that Graduated in Five Years", col = c("Light Blue","Navy Blue","Dark Orange"))
+```
+Create a Bar Chart for Five-year graduation rate
+```{r}
+barplot(tb5YGpercent, col = "lightblue", ylim=c(0,1),main = "Five Year Graduation Rate for CS Students who Started on 2008-2014")
+```
+Create a table of numbers and percetages of students that graduate in 6 years
+```{r}
+tb6YG <- table(dfDataSet$"6YG")
+tb6YGpercent <- prop.table(tb6YG)
+tb6YGpercent
+cbind(tb6YG,prop.table(tb6YG))
+```
+Create a Pie Chart for Five-year graduation rate
+```{r}
+pie(tb6YG, main = "CS Students that Graduated in Six Years", col = c("Light Blue","Navy Blue","Dark Orange"))
+```
+Create a Bar Chart for Six-year graduation rate
+```{r}
+barplot(tb6YGpercent, col = "navy blue", ylim=c(0,1), main = "Six Year Graduation Rate for CS Students who Started on 2008-2014")
+```
+
+
 

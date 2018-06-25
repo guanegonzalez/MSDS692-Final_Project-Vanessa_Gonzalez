@@ -1,0 +1,173 @@
+---
+title: "Classification Trees and Random Forest"
+output: html_notebook
+---
+## Random Forest method with all course variables
+Open libraries
+```{r}
+library("mlbench")
+library("dplyr")
+library("caret")
+library("randomForest")
+library("lattice")
+library("ggplot2")
+library("rpart")
+library("e1071")
+library("caret", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+```
+
+
+##Random Forest for Variable Importance
+```{r}
+head(dfDataSet4YGImpute)
+```
+The RandomForest library does not accept numbers or "_" in columng titles so the column titles need to be modified.
+```{r}
+colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
+head(dfDataSet4YGImpute)
+```
+Parrtitions created with 80% of data for training and 20% of data for testing.
+```{r}
+inTraining <- createDataPartition(dfDataSet4YGImpute$FourYG, p = 0.80, list = FALSE)
+training <- dfDataSet4YGImpute[inTraining, ]
+testing <- dfDataSet4YGImpute[-inTraining, ]
+```
+```{r}
+training
+```
+
+```{r}
+testing
+
+```
+
+##Regresion Partition with method "class".
+```{r}
+FourYG.rp = rpart(FourYG ~ ., data=training, method = "class")
+FourYG.rp
+```
+Display CP table for Fitted Rpart Object.
+The main variables used in this classification tree were: CSCI206, CSCI403, CSCI341, and CSCI406.
+```{r}
+printcp(FourYG.rp)
+```
+
+```{r}
+plotcp(FourYG.rp)
+```
+```{r}
+summary(FourYG.rp)
+```
+```{r}
+plot(FourYG.rp, uniform=TRUE, branch=.3, margin=0.2)
+text(FourYG.rp, all=TRUE, use.n = TRUE)
+```
+```{r}
+predictions = predict(FourYG.rp, testing, type="class")
+table(testing$FourYG, predictions)
+
+```
+```{r}
+library(caret)
+confusionMatrix(table(predictions, testing$FourYG))
+
+```
+```{r}
+min(FourYG.rp$cptable[,"xerror"])
+```
+```{r}
+which.min(FourYG.rp$cptable[,"xerror"])
+```
+Get the cost complecity parameter of the record
+```{r}
+FourYG.cp = FourYG.rp$cptable[5,"CP"]
+FourYG.cp
+
+```
+```{r}
+prune.tree = prune(FourYG.rp, cp= FourYG.cp)
+```
+```{r}
+plot(prune.tree, margin= 0.1)
+text(prune.tree, all=TRUE , use.n=TRUE)
+```
+
+```{r}
+prune.tree = prune(FourYG.rp, cp = FourYG.cp)
+predictions = predict(prune.tree, testing, type="class")
+table(testing$FourYG, predictions)
+
+```
+```{r}
+confusionMatrix(table(predictions, testing$FourYG))
+```
+
+
+```{r}
+FourYG.rf <- randomForest(FourYG ~One.CSCI101+One.MATH111+Two.CSCI261+Two.MATH112+Two.MATH201+Three.CSCI262+Three.MATH213+Four.CSCI341+Four.CSCI358+Four.MATH225+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Seven.CSCI370+Eight.CSCI400+Eight.CSCI442  , data = training)
+FourYG.rf
+```
+
+```{r}
+FourYG.rf.prediction <- predict(FourYG.rf, testing)
+table(FourYG.rf.prediction, testing$FourYG)
+```
+```{r}
+plot(FourYG.rf)
+```
+
+```{r}
+importance(FourYG.rf)
+```
+
+
+```{r}
+varImpPlot(FourYG.rf)
+```
+```{r}
+margins.rf=margin(FourYG.rf,training)
+plot(margins.rf)
+
+```
+```{r}
+hist(margins.rf,main="Margins of Random Forest for Courses dataset")
+```
+```{r}
+boxplot(margins.rf~training$FourYG, main="Margins of Random
+Courses Dataset by Class")
+
+```
+
+
+```{r}
+confusionMatrix(table(predictions, testing$FourYG))
+```
+LOGISTIC REGRESION
+```{r}
+# Template code
+# Step 1: Build Logit Model on Training Dataset
+
+FourYG.lr <- glm(FourYG ~One.CSCI101+One.MATH111+Two.CSCI261+Two.MATH112+Two.MATH201+Three.CSCI262+Three.MATH213+Four.CSCI341+Four.CSCI358+Four.MATH225+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Seven.CSCI370+Eight.CSCI400+Eight.CSCI442, family= "binomial", data = training)
+FourYG.lr
+
+# Step 2: Predict Y on Test Dataset
+predictedY <- predict(FourYG.lr, testing, type="response") 
+```
+
+
+CHECK
+```{r}
+predictedY.rf <- predict(FourYG.rf, testing, type="response") 
+predictedY.rf
+```
+```{r}
+plot(predictedY.rf, col = "navy blue")
+```
+
+
+```{r}
+gbmImp <- varImp(FourYG.rf, scale = FALSE)
+gbmImp
+```
+
+

@@ -1,0 +1,151 @@
+---
+title: "Model with Less Variables"
+author: "Vanessa Gonzalez"
+date: "`r format(Sys.Date())`"
+output: html_notebook
+---
+## Random Forest Model using less variables
+
+Open libraries.
+```{r}
+library("mlbench")
+library("caret")
+library("randomForest")
+library("lattice")
+library("ggplot2")
+library("rpart")
+library("e1071")
+library("caret", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+```
+
+```{r}
+colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
+LessVariablesSet <- dfDataSet4YGImpute
+
+# Creates Data Partitions and removes variables
+inTrainingLess <- createDataPartition(LessVariablesSet$FourYG, p = 0.80, list = FALSE)
+LessVariablesSet <- LessVariablesSet[-(2:3)]
+LessVariablesSet <- LessVariablesSet[-(3)]
+LessVariablesSet <- LessVariablesSet[-(5)]
+LessVariablesSet <- LessVariablesSet[-(7)]
+LessVariablesSet <- LessVariablesSet[-(11)]
+
+# Creates Training data Set
+trainingLess <- LessVariablesSet[inTrainingLess, ]
+# Creates Testing data Set
+testingLess <- LessVariablesSet[-inTrainingLess, ]
+# Data Set with less varialbes
+head(LessVariablesSet)
+```
+```{r}
+trainingLess
+```
+
+```{r}
+testingLess
+
+```
+
+##Regresion Partition with method "class" for set with less variables
+```{r}
+FourYG.rp.Less = rpart(FourYG ~ ., data=trainingLess, method = "class")
+FourYG.rp.Less
+```
+
+```{r}
+
+printcp(FourYG.rp.Less)
+```
+Create a summary for the data set with less variables
+```{r}
+summary(FourYG.rp.Less)
+```
+Prediction
+```{r}
+predictionsLess = predict(FourYG.rp.Less, testingLess, type="class")
+table(testingLess$FourYG, predictionsLess)
+
+```
+Confusion Matrix
+```{r}
+library(caret)
+confusionMatrix(table(predictionsLess, testingLess$FourYG))
+
+```
+```{r}
+min(FourYG.rp.Less$cptable[,"xerror"])
+```
+```{r}
+which.min(FourYG.rp.Less$cptable[,"xerror"])
+```
+Get the cost complecity parameter of the record
+```{r}
+FourYG.cp.Less = FourYG.rp$cptable[3,"CP"]
+FourYG.cp.Less
+
+```
+```{r}
+prune.tree.Less = prune(FourYG.rp.Less, cp= FourYG.cp.Less)
+```
+
+
+```{r}
+prune.tree.Less = prune(FourYG.rp.Less, cp = FourYG.cp.Less)
+predictionsLessPrune = predict(prune.tree.Less, testingLess, type="class")
+table(testingLess$FourYG, predictionsLessPrune)
+
+```
+
+```{r}
+confusionMatrix(table(predictionsLessPrune, testingLess$FourYG))
+```
+
+Top 10 variables
+
+```{r}
+str(LessVariablesSet)
+```
+## Random Forest model with les variables
+```{r}
+FourYG.rf.Less <- randomForest(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Eight.CSCI400+Eight.CSCI442  , data = trainingLess)
+FourYG.rf.Less
+```
+
+```{r}
+FourYG.rf.prediction.Less <- predict(FourYG.rf.Less, testingLess)
+table(FourYG.rf.prediction.Less, testingLess$FourYG)
+```
+
+
+```{r}
+importance(FourYG.rf.Less)
+```
+
+
+```{r}
+varImpPlot(FourYG.rf.Less)
+```
+
+```{r}
+confusionMatrix(table(FourYG.rf.prediction.Less, testingLess$FourYG))
+```
+## Logistic Regresion with less variables
+
+```{r}
+# Template code
+# Step 1: Build Logit Model on Training Dataset
+
+FourYG.lr.Less <- glm(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Eight.CSCI400+Eight.CSCI442, family= "binomial", data = trainingLess)
+FourYG.lr.Less
+
+# Step 2: Predict Y on Test Dataset
+predicted.lr.Less <- predict(FourYG.lr.Less, testingLess, type="response") 
+```
+Variable Importance
+```{r}
+gbmImp.Less <- varImp(FourYG.rf.Less, scale = FALSE)
+gbmImp.Less
+```
+
+
+
