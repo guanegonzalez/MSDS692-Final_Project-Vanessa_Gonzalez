@@ -18,6 +18,17 @@ We will try to answer the following questions:
 
 The data used was extracted from the University Database using IBM Cognos as the tool to query the database. Data from 2008 to 2018 was used. Two data sets were created; One with grades for courses in the math and CS sequences all CS students are required to take for graduation, and another set with the dates when these courses were taken. Both data sets also contained variables describing if the students graduated from CS or if they left the program. A variable was included to describe if the students graduated in four years from CS or if they changed major from the major they changed to.
 
+### Observations on the Quality of the Data
+It was observed in both data sets that to show all the variables needed more than one table from the database was needed. Not all tables resided in the same Cognos packages so further merger was necessary. Merges were performed utilizing Tableau with the student ID as the item for linking the tables. 
+Further changes and cleaning was necessary:
+Academic period format had to be changed from year-period to year-month.
+Course names had to be changed to Number of Semester recommended plus course code.
+Double majors had to be cleaned to show just the CS record.
+Several CASE statements in Tableau were used to define depending registration in Spring 18 and Fall 18 if the students were current students or if the students had left the institution.
+CASE statements in Tableau were used to define the student group as CS students if CS had been their original major or their first major.
+Calculations were added in Tableau to define the length between original major date and graduation date.
+
+
 # EDA (Exploratory Data Analysis)
 ## Data Preparation and EDA
 
