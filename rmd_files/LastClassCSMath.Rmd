@@ -1,0 +1,95 @@
+---
+title: "CS Last Course Analysis"
+output: html_notebook
+---
+
+Variable CS Grad: 
+* Yes - CS Students
+OtherMajor - Left CS to another major
+NG - Not Graduated
+
+Data from 2008-2018 and excludes current students and students that graduated from CS.
+
+Import Data Set
+```{r}
+library(readxl)
+CourseDateData <- read_excel("CourseDateData.xlsx")
+
+library(readxl)
+CourseDateDataNoCS <- read_excel("CourseDateDataNoCS.xlsx")
+```
+
+```{r}
+summary(CourseDateDataNoCS)
+```
+
+```{r}
+str(CourseDateDataNoCS)
+```
+
+```{r}
+DataNoCS <- CourseDateDataNoCS[-(1:6)]
+str(DataNoCS)
+```
+
+```{r}
+DataNoCS$GraduationStatus <- as.factor(DataNoCS$GraduationStatus)
+DataNoCS$CsGrad <- as.factor(DataNoCS$CsGrad)
+str(DataNoCS)
+```
+```{r}
+CourseDates <- DataNoCS[-(1:2)]
+str(CourseDates)
+```
+
+```{r}
+dfCourseDates <- as.data.frame(CourseDates)
+```
+Replace NA with 0
+```{r}
+dfCourseDates[is.na(dfCourseDates)] <- 0
+head(dfCourseDates)
+```
+
+```{r}
+LastClass <- colnames(dfCourseDates)[max.col(dfCourseDates,ties.method="first")]
+dfCourseDates$LastClass <- LastClass
+head(dfCourseDates)
+```
+```{r}
+View(dfCourseDates)
+```
+```{r}
+summary(dfCourseDates)
+```
+
+```{r}
+library(caret)
+library(lattice)
+library(ggplot2)
+```
+
+
+```{r}
+tbLastClass <- table(dfCourseDates$LastClass)
+tbLastClass
+```
+
+```{r}
+dfLastClass <- as.data.frame(tbLastClass)
+dfLastClass
+```
+
+```{r}
+p<-ggplot(data=dfLastClass, aes(x= reorder(Var1, Freq),  y=Freq)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  labs(title ="Last Highest Course Taken", x = "Course", y = "Frequency") +
+  ylim(0,45) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  geom_text(aes(label = Freq), hjust=-.5 , position = position_dodge(width = 1),inherit.aes = TRUE) +
+  coord_flip()
+p
+```
+
+
+
