@@ -1,7 +1,7 @@
 # MSDS692-Final-Project
 Final Project for MSDS692
 
-## Predicting Computer Science (CS) Program Pain Points in CS Course Sequence for the Increase on Student Support to Achieve Better Four-year Graduation Rates.
+## Helping Students Achieve Four-year Graduation Rates by Predicting Computer Science (CS) Program Pain Points in CS Course Sequence.
 
 # Project Overview
 
@@ -11,8 +11,8 @@ A variety of factors influence the student decision to leave or change major but
 
 We will try to answer the following questions:
 
-*	Which are the main points of attrition in the CS course sequence conducive to the loss of students from the CS progroam or University?
 *	What students are at risk at the start of a course to make sure we address their needs and provide support proactively?
+* Which are the main points of attrition in the CS course sequence conducive to the loss of students from the CS program or University?
 
 # EDA (Exploratory Data Analysis)
 xxxx
