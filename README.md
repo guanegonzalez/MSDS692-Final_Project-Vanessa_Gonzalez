@@ -1,5 +1,5 @@
 # MSDS692-Final-Project
-Final Project for MSDS692
+by Vanessa Gonzalez, June 2018
 
 ## Helping Students Achieve Four-year Graduation Rates by Predicting Computer Science (CS) Program Pain Points in CS Course Sequence.
 
