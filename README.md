@@ -152,6 +152,7 @@ Create a Pie chart
 ```{r}
 pie(tb, main = "CS Students Status that Started 2008-2014", col = c("Light Blue","Navy Blue","Dark Orange"))
 ```
+![](CS Students Status Pie.png)
 Create a Bar chart
 ```{r}
 barplot(tb, col = "navy blue", ylim=c(0,400),main = "Computer Science Students who Started the Program (2008-2014)")
@@ -214,6 +215,96 @@ Create a Bar Chart for Six-year graduation rate
 ```{r}
 barplot(tb6YGpercent, col = "navy blue", ylim=c(0,1), main = "Six Year Graduation Rate for CS Students who Started on 2008-2014")
 ```
+### Data Set 2
+Variable CS Grad:  
+* Yes - CS Students
+* OtherMajor - Left CS
+* NG - Not Graduated. 
+
+Data from 2008-2018 and excludes current students and students that graduated from CS.
+
+Import Data Set and open libraries.
+```{r}
+library(readxl)
+CourseDateData <- read_excel("CourseDateData.xlsx")
+library(readxl)
+CourseDateDataNoCS <- read_excel("CourseDateDataNoCS.xlsx")
+```
+Take a look at the data.
+```{r}
+summary(CourseDateDataNoCS)
+```
+```{r}
+str(CourseDateDataNoCS)
+```
+Remove unecesary columns
+```{r}
+DataNoCS <- CourseDateDataNoCS[-(1:6)]
+str(DataNoCS)
+```
+Transform data type to the appropriate type.
+```{r}
+DataNoCS$GraduationStatus <- as.factor(DataNoCS$GraduationStatus)
+DataNoCS$CsGrad <- as.factor(DataNoCS$CsGrad)
+str(DataNoCS)
+```
+Remove Math Courses to understand better when students leave the CS program.
+```{r}
+CourseDates <- DataNoCS[-(1:2)]
+CourseDates <- CourseDates[-(6)]
+CourseDates <- CourseDates[-(9)]
+CourseDates <- CourseDates[-(10)]
+CourseDates <- CourseDates[-(11:13)]
+str(CourseDates)
+```
+Transform data set into data frame.
+```{r}
+dfCourseDates <- as.data.frame(CourseDates)
+```
+Replace NA with 0
+```{r}
+dfCourseDates[is.na(dfCourseDates)] <- 0
+head(dfCourseDates)
+```
+Find highest level last class each student took.
+```{r}
+LastClass <- colnames(dfCourseDates)[max.col(dfCourseDates,ties.method="first")]
+dfCourseDates$LastClass <- LastClass
+head(dfCourseDates)
+```
+```{r}
+summary(dfCourseDates)
+```
+Open additional libraries
+```{r}
+library(caret)
+library(lattice)
+library(ggplot2)
+```
+Create table from data frame.
+```{r}
+tbLastClass <- table(dfCourseDates$LastClass)
+tbLastClass
+```
+Create a data frame from table for graphing.
+```{r}
+dfLastClass <- as.data.frame(tbLastClass)
+dfLastClass
+```
+Graph frequency of last CS class taken by students that left the program.
+```{r}
+p<-ggplot(data=dfLastClass, aes(x= reorder(Var1, Freq),  y=Freq)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  labs(title ="Last Highest CS Course Taken by Not Grad. and Other Major Students", x = "Course", y = "Frequency") +
+  ylim(0,60) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  geom_text(aes(label = Freq), hjust=-.5 , position = position_dodge(width = 1),inherit.aes = TRUE) +
+  coord_flip()
+p
+```
+
+
+
 
 
 
