@@ -302,17 +302,74 @@ p<-ggplot(data=dfLastClass, aes(x= reorder(Var1, Freq),  y=Freq)) +
   coord_flip()
 p
 ```
+To start the analysis for four year graduation success the need of creating a subset of the data arised. It was necessary to look at just the students that had completed the CS program succesfully in four years. It was also helpful to find the correlation between the courses taken by the students. The code below was used to achieve this.
+---
+title: "Subsets of Data Set"
+author: "Vanessa Gonzalez"
+date: "`r format(Sys.Date())`"
+output: html_notebook
+---
 
-
-
-
-
-
-
+## CS Graduated Students Data Set
+```{r}
+library("caret")
+summary(dfDataSet)
+```
+Create a subset of data consisting of students with a "GraduationStatus" of "Graduated"
+```{r}
+GraduatedData<-subset(dfDataSet, GraduationStatus == 'Graduated')
+head(GraduatedData)
+```
+Look at the data subset
+```{r}
+summary(GraduatedData)
+```
+```{r}
+str(GraduatedData)
+```
+Remove not needed columns from data set and leave factor Four-year Graduation Factor
+```{r}
+DataSet4YG <- GraduatedData[(5:24)]
+DataSet4YG <- DataSet4YG[-(2:3)]
+head(DataSet4YG)
+```
+Transform data set into a data frame
+```{r}
+dfDataSet4YG <-as.data.frame(DataSet4YG)
+```
+Find coorelation between variables using "spearman" method
+```{r}
+res<- cor(dfDataSet4YG[-(1)], method = 'spearman', use = "complete.obs") 
+round(res,2)
+```
+To substitute NA values with another value the KNN Imputation method is used
+```{r}
+library("DMwR")
+DataSet4YGImpute <- knnImputation(DataSet4YG)
+head(DataSet4YGImpute)
+```
+```{r}
+str(DataSet4YGImpute)
+```
+```{r}
+dfDataSet4YGImpute <-as.data.frame(DataSet4YGImpute)
+```
+Create a correlation plot between variables
+```{r}
+library(corrplot)
+```
+```{r}
+corrplot(cor(dfDataSet4YGImpute[-(1)], method = 'spearman', use = "complete.obs"))
+```
+To determine variables with a correlation higher than 0.5
+```{r}
+highlyCorrelated <- findCorrelation(res, cutoff=0.5)
+print(highlyCorrelated)
+```
+[1] 13 16  5 10 14 17
 
 # Analysis
-* ANOVA
-* T test etc
+
 
 # Conclusions
 
