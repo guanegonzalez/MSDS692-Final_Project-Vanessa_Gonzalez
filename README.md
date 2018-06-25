@@ -303,46 +303,40 @@ p<-ggplot(data=dfLastClass, aes(x= reorder(Var1, Freq),  y=Freq)) +
 p
 ```
 To start the analysis for four year graduation success the need of creating a subset of the data arised. It was necessary to look at just the students that had completed the CS program succesfully in four years. It was also helpful to find the correlation between the courses taken by the students. The code below was used to achieve this.
----
-title: "Subsets of Data Set"
-author: "Vanessa Gonzalez"
-date: "`r format(Sys.Date())`"
-output: html_notebook
----
 
-## CS Graduated Students Data Set
+#### CS Graduated Students Data Subset
 ```{r}
 library("caret")
 summary(dfDataSet)
 ```
-Create a subset of data consisting of students with a "GraduationStatus" of "Graduated"
+Create a subset of data consisting of students with a "GraduationStatus" of "Graduated".
 ```{r}
 GraduatedData<-subset(dfDataSet, GraduationStatus == 'Graduated')
 head(GraduatedData)
 ```
-Look at the data subset
+Look at the data subset.
 ```{r}
 summary(GraduatedData)
 ```
 ```{r}
 str(GraduatedData)
 ```
-Remove not needed columns from data set and leave factor Four-year Graduation Factor
+Remove not needed columns from data set and leave factor Four-year Graduation Factor.
 ```{r}
 DataSet4YG <- GraduatedData[(5:24)]
 DataSet4YG <- DataSet4YG[-(2:3)]
 head(DataSet4YG)
 ```
-Transform data set into a data frame
+Transform data set into a data frame.
 ```{r}
 dfDataSet4YG <-as.data.frame(DataSet4YG)
 ```
-Find coorelation between variables using "spearman" method
+Find coorelation between variables using "spearman" method.
 ```{r}
 res<- cor(dfDataSet4YG[-(1)], method = 'spearman', use = "complete.obs") 
 round(res,2)
 ```
-To substitute NA values with another value the KNN Imputation method is used
+To substitute NA values with another value the KNN Imputation method is used.
 ```{r}
 library("DMwR")
 DataSet4YGImpute <- knnImputation(DataSet4YG)
@@ -369,6 +363,448 @@ print(highlyCorrelated)
 [1] 13 16  5 10 14 17
 
 # Analysis
+## Building the Models in R
+Several Libraries were used to perform this task:
+* library("mlbench"). 
+* library("dplyr"). 
+* library("caret"). 
+* library("randomForest")  
+* library("lattice"). 
+* library("ggplot2"). 
+* library("rpart"). 
+* library("e1071"). 
+* library("caret"). 
+
+Three main models were used to determine variable importance, to train, and test the model.
+
+* Regresion Partition with method "class". 
+* Random Forest model. 
+* Logistic Regresion.  
+80% of the data was used as the training set and 20% of the data was used as the testing set.
+
+Models were created using all courses variables and then subsequently variables with less importance were removed. New models were created for this new data set. Several methods were tried to increase accuracy. Trees were prunned, size of training set was increased and different number of variables were removed. The ideal conditions for accuracy are the ones shown below.
+
+### Regression Classification Trees and Random Forest Using All Variables
+
+
+#### Partitions Creation
+```{r}
+head(dfDataSet4YGImpute)
+```
+The RandomForest library does not accept numbers or "_" in columng titles so the column titles need to be modified.
+```{r}
+colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
+head(dfDataSet4YGImpute)
+```
+Parrtitions created with 80% of data for training and 20% of data for testing.
+```{r}
+inTraining <- createDataPartition(dfDataSet4YGImpute$FourYG, p = 0.80, list = FALSE)
+training <- dfDataSet4YGImpute[inTraining, ]
+testing <- dfDataSet4YGImpute[-inTraining, ]
+```
+```{r}
+training
+```
+
+```{r}
+testing
+```
+
+#### Regresion Partition with method "class".
+```{r}
+FourYG.rp = rpart(FourYG ~ ., data=training, method = "class")
+FourYG.rp
+```
+Display CP table for Fitted Rpart Object.
+The main variables used in this classification tree were: CSCI206, CSCI403, CSCI341, and CSCI406.
+```{r}
+printcp(FourYG.rp)
+```
+Plot CP.
+```{r}
+plotcp(FourYG.rp)
+```
+To look at the importance of variables in the regression partition with method "class".
+```{r}
+summary(FourYG.rp)
+```
+Plot of classification Tree
+```{r}
+plot(FourYG.rp, uniform=TRUE, branch=.3, margin=0.2)
+text(FourYG.rp, all=TRUE, use.n = TRUE)
+```
+Utilizing the regression classification tree model the results for the testing set are below.
+```{r}
+predictions = predict(FourYG.rp, testing, type="class")
+table(testing$FourYG, predictions)
+
+```
+
+A confusion matrix is created to compare prediction results with testing results.
+```{r}
+library(caret)
+confusionMatrix(table(predictions, testing$FourYG))
+```
+
+```{r}
+min(FourYG.rp$cptable[,"xerror"])
+```
+```{r}
+which.min(FourYG.rp$cptable[,"xerror"])
+```
+Prune the tree to increase accuracy.
+Get the cost complecity parameter of the record
+```{r}
+FourYG.cp = FourYG.rp$cptable[3,"CP"]
+FourYG.cp
+
+```
+```{r}
+prune.tree = prune(FourYG.rp, cp= FourYG.cp)
+```
+```{r}
+plot(prune.tree, margin= 0.1)
+text(prune.tree, all=TRUE , use.n=TRUE)
+```
+Prune tree.
+```{r}
+prune.tree = prune(FourYG.rp, cp = FourYG.cp)
+predictions.prune = predict(prune.tree, testing, type="class")
+table(testing$FourYG, predictions.prune)
+
+```
+Confusion matrix for punned tree.
+```{r}
+confusionMatrix(table(predictions.prune, testing$FourYG))
+```
+#### Random Forest Method
+
+```{r}
+FourYG.rf <- randomForest(FourYG ~One.CSCI101+One.MATH111+Two.CSCI261+Two.MATH112+Two.MATH201+Three.CSCI262+Three.MATH213+Four.CSCI341+Four.CSCI358+Four.MATH225+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Seven.CSCI370+Eight.CSCI400+Eight.CSCI442  , data = training)
+FourYG.rf
+```
+
+```{r}
+FourYG.rf.prediction <- predict(FourYG.rf, testing)
+table(FourYG.rf.prediction, testing$FourYG)
+```
+
+To determine variable imortance.
+```{r}
+importance(FourYG.rf)
+```
+Plot for variable importance
+
+```{r}
+varImpPlot(FourYG.rf)
+```
+
+
+```{r}
+confusionMatrix(table(FourYG.rf.prediction, testing$FourYG))
+```
+#### Logistic Regression Method for Variable Importance
+A different method was tried to confirm the variable importance obtained through Random Forest. The results were very similar.
+```{r}
+# Template code
+# Build Logit Model on Training Dataset
+
+FourYG.lr <- glm(FourYG ~One.CSCI101+One.MATH111+Two.CSCI261+Two.MATH112+Two.MATH201+Three.CSCI262+Three.MATH213+Four.CSCI341+Four.CSCI358+Four.MATH225+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Seven.CSCI370+Eight.CSCI400+Eight.CSCI442, family= "binomial", data = training)
+FourYG.lr
+
+# Predict Y on Test Dataset
+predictedY <- predict(FourYG.lr, testing, type="response") 
+```
+
+
+Check prediction
+```{r}
+predictedY.rf <- predict(FourYG.rf, testing, type="response") 
+predictedY.rf
+```
+Plot prediction
+```{r}
+plot(predictedY.rf, col = "navy blue")
+```
+
+For a list of importance of variables
+```{r}
+gbmImp <- varImp(FourYG.rf, scale = FALSE)
+gbmImp
+```
+### Models using less variables
+
+```{r}
+colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
+LessVariablesSet <- dfDataSet4YGImpute
+
+# Creates Data Partitions and removes variables
+inTrainingLess <- createDataPartition(LessVariablesSet$FourYG, p = 0.80, list = FALSE)
+LessVariablesSet <- LessVariablesSet[-(2:3)]
+LessVariablesSet <- LessVariablesSet[-(3)]
+LessVariablesSet <- LessVariablesSet[-(5)]
+LessVariablesSet <- LessVariablesSet[-(7)]
+LessVariablesSet <- LessVariablesSet[-(11)]
+
+# Creates Training data Set
+trainingLess <- LessVariablesSet[inTrainingLess, ]
+# Creates Testing data Set
+testingLess <- LessVariablesSet[-inTrainingLess, ]
+# Data Set with less varialbes
+head(LessVariablesSet)
+```
+```{r}
+trainingLess
+```
+
+```{r}
+testingLess
+
+```
+
+#### Regresion Partition with method "class" for set with less variables
+```{r}
+FourYG.rp.Less = rpart(FourYG ~ ., data=trainingLess, method = "class")
+FourYG.rp.Less
+```
+
+```{r}
+
+printcp(FourYG.rp.Less)
+```
+Create a summary for the data set with less variables
+```{r}
+summary(FourYG.rp.Less)
+```
+Prediction
+```{r}
+predictionsLess = predict(FourYG.rp.Less, testingLess, type="class")
+table(testingLess$FourYG, predictionsLess)
+
+```
+Confusion Matrix
+```{r}
+library(caret)
+confusionMatrix(table(predictionsLess, testingLess$FourYG))
+
+```
+```{r}
+min(FourYG.rp.Less$cptable[,"xerror"])
+```
+```{r}
+which.min(FourYG.rp.Less$cptable[,"xerror"])
+```
+Get the cost complecity parameter of the record
+```{r}
+FourYG.cp.Less = FourYG.rp$cptable[3,"CP"]
+FourYG.cp.Less
+
+```
+```{r}
+prune.tree.Less = prune(FourYG.rp.Less, cp= FourYG.cp.Less)
+```
+
+
+```{r}
+prune.tree.Less = prune(FourYG.rp.Less, cp = FourYG.cp.Less)
+predictionsLessPrune = predict(prune.tree.Less, testingLess, type="class")
+table(testingLess$FourYG, predictionsLessPrune)
+
+```
+
+```{r}
+confusionMatrix(table(predictionsLessPrune, testingLess$FourYG))
+```
+
+Top 10 variables
+
+```{r}
+str(LessVariablesSet)
+```
+#### Random Forest model with les variables
+```{r}
+FourYG.rf.Less <- randomForest(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Eight.CSCI400+Eight.CSCI442  , data = trainingLess)
+FourYG.rf.Less
+```
+
+```{r}
+FourYG.rf.prediction.Less <- predict(FourYG.rf.Less, testingLess)
+table(FourYG.rf.prediction.Less, testingLess$FourYG)
+```
+
+
+```{r}
+importance(FourYG.rf.Less)
+```
+
+
+```{r}
+varImpPlot(FourYG.rf.Less)
+```
+
+```{r}
+confusionMatrix(table(FourYG.rf.prediction.Less, testingLess$FourYG))
+```
+#### Logistic Regresion with less variables
+
+```{r}
+# Template code
+# Step 1: Build Logit Model on Training Dataset
+
+FourYG.lr.Less <- glm(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Eight.CSCI400+Eight.CSCI442, family= "binomial", data = trainingLess)
+FourYG.lr.Less
+
+# Step 2: Predict Y on Test Dataset
+predicted.lr.Less <- predict(FourYG.lr.Less, testingLess, type="response") 
+```
+Variable Importance
+```{r}
+gbmImp.Less <- varImp(FourYG.rf.Less, scale = FALSE)
+gbmImp.Less
+```
+
+Once the highest accuracy was achieved then courses from higher semesters were removed one by one while keeping a similar accuracy to when all courses were used. This was done with the purpose of predicting students at risk as soon as possible while they go through the CS class sequence. Courses taken generally on the 6th, 7th, and 8th semesters were able to be taken out to build a 5th semester model of students at risk.
+
+### Prediction of Students at Risk on Semester 5"
+```{r}
+colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
+LessVariablesSet.Sem5 <- dfDataSet4YGImpute
+```
+```{r}
+LessVariablesSet.Sem5
+```
+Create data partitions and remove variables to leave only classes before 6th semester.
+```{r}
+# Creates Data Partitions and removes variables
+inTrainingLess.Sem5 <- createDataPartition(LessVariablesSet.Sem5$FourYG, p = 0.80, list = FALSE)
+LessVariablesSet.Sem5 <- LessVariablesSet[-(2:3)]
+LessVariablesSet.Sem5 <- LessVariablesSet[-(3)]
+LessVariablesSet.Sem5 <- LessVariablesSet[-(5)]
+LessVariablesSet.Sem5 <- LessVariablesSet[-(7)]
+LessVariablesSet.Sem5 <- LessVariablesSet[-(11)]
+
+LessVariablesSet.Sem5 <- LessVariablesSet[-(11:12)]
+str(LessVariablesSet.Sem5)
+```
+```{r}
+# Creates Training data Set
+trainingLess.Sem5 <- LessVariablesSet.Sem5[inTrainingLess.Sem5, ]
+# Creates Testing data Set
+testingLess.Sem5 <- LessVariablesSet.Sem5[-inTrainingLess.Sem5, ]
+# Data Set with less varialbes
+head(LessVariablesSet.Sem5)
+```
+```{r}
+trainingLess.Sem5
+```
+
+```{r}
+testingLess.Sem5
+
+```
+
+#### Regresion Partition with method "class" for less variables for 5th semester courses.
+```{r}
+FourYG.rp.Less.Sem5 = rpart(FourYG ~ ., data=trainingLess.Sem5, method = "class")
+FourYG.rp.Less.Sem5
+```
+
+```{r}
+
+printcp(FourYG.rp.Less.Sem5)
+```
+Summary for regression partition.
+```{r}
+summary(FourYG.rp.Less.Sem5)
+```
+Prediction for regretion partition for less courses before Semester 5.
+```{r}
+predictionsLess.Sem5 = predict(FourYG.rp.Less.Sem5, testingLess.Sem5, type="class")
+table(testingLess.Sem5$FourYG, predictionsLess.Sem5)
+
+```
+Confusion Matrix
+```{r}
+library(caret)
+confusionMatrix(table(predictionsLess.Sem5, testingLess.Sem5$FourYG))
+
+```
+```{r}
+min(FourYG.rp.Less.Sem5$cptable[,"xerror"])
+```
+```{r}
+which.min(FourYG.rp.Less.Sem5$cptable[,"xerror"])
+```
+Get the cost complecity parameter of the record
+```{r}
+FourYG.cp.Less.Sem5 = FourYG.rp.Less.Sem5$cptable[1,"CP"]
+FourYG.cp.Less.Sem5
+
+```
+
+Prune tree.
+```{r}
+prune.tree.Less.Sem5 = prune(FourYG.rp.Less.Sem5, cp = FourYG.cp.Less.Sem5)
+predictionsLessPrune.Sem5 = predict(prune.tree.Less.Sem5, testingLess.Sem5, type="class")
+table(testingLess.Sem5$FourYG, predictionsLessPrune.Sem5)
+
+```
+Confusion Matrix
+```{r}
+confusionMatrix(table(predictionsLessPrune.Sem5, testingLess.Sem5$FourYG))
+```
+
+Top 10 variables
+
+```{r}
+str(LessVariablesSet.Sem5)
+```
+#### Random Forest method with less variables on 5th semester.
+Training
+```{r}
+FourYG.rf.Less.Sem5 <- randomForest(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406 , data = trainingLess.Sem5)
+FourYG.rf.Less.Sem5
+```
+Prediction
+```{r}
+FourYG.rf.prediction.Less.Sem5 <- predict(FourYG.rf.Less.Sem5, testingLess.Sem5)
+table(FourYG.rf.prediction.Less.Sem5, testingLess.Sem5$FourYG)
+```
+
+Importance of variables.
+```{r}
+importance(FourYG.rf.Less.Sem5)
+```
+
+Plot of importance of Variabels.
+```{r}
+varImpPlot(FourYG.rf.Less.Sem5)
+```
+Confusion Matrix
+```{r}
+confusionMatrix(table(FourYG.rf.prediction.Less.Sem5, testingLess.Sem5$FourYG))
+```
+#### Logistic Regression method for variable importance
+
+```{r}
+# Template code
+# Step 1: Build Logit Model on Training Dataset
+
+FourYG.lr.Less.Sem5 <- glm(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406, family= "binomial", data = trainingLess.Sem5)
+FourYG.lr.Less.Sem5
+
+# Step 2: Predict Y on Test Dataset
+predicted.lr.Less.Sem5 <- predict(FourYG.lr.Less.Sem5, testingLess.Sem5, type="response") 
+```
+Variable Importance
+```{r}
+gbmImp.Less.Sem5 <- varImp(FourYG.rf.Less.Sem5, scale = FALSE)
+gbmImp.Less.Sem5
+```
+
+
+
+
 
 
 # Conclusions
