@@ -15,7 +15,31 @@ We will try to answer the following questions:
 * Which are the main points of attrition in the CS course sequence conducive to the loss of students from the CS program or University?
 
 # EDA (Exploratory Data Analysis)
-xxxx
+## Data Preparation and EDA
+First File to Run
+Open Libraries
+```
+library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("graphics", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("gplots", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("dplyr")
+library("lattice", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("data.table", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+library("datasets")
+library("readxl")
+library("stats")
+```
+Import data set
+```
+setwd("~/REGIS/Practicum I/RStudio")
+dataSet <- read_excel("./dataSet.xlsx")
+#View(dataSet)
+```
+Transform data set into data frame
+```
+dfDataSet <- as.data.frame(dataSet)
+head(dfDataSet)
+```
 # Analysis
 * ANOVA
 * T test etc
