@@ -18,7 +18,7 @@ We will try to answer the following questions:
 
 The data used was extracted from the University Database using IBM Cognos as the tool to query the database. Data from 2008 to 2018 was used. Two data sets were created; One with grades for courses in the math and CS sequences all CS students are required to take for graduation, and another set with the dates when these courses were taken. Both data sets also contained variables describing if the students graduated from CS or if they left the program. A variable was included to describe if the students graduated in four years from CS or if they changed major from the major they changed to.
 
-### Observations on the Quality of the Data
+### Observations on the Quality and cleaning of the Data
 It was observed in both data sets that to show all the variables needed more than one table from the database was needed. Not all tables resided in the same Cognos packages so further mergers were necessary. Merges were performed utilizing Tableau with the student ID as the item for linking the separate data files. 
 Further changes and cleaning were necessary:
 * Academic period format had to be changed from year-period to year-month.
@@ -26,7 +26,7 @@ Further changes and cleaning were necessary:
 * Double majors had to be cleaned to show just the CS record.
 * Several CASE statements in Tableau were used to define depending registration in Spring 18 and Fall 18 if the students were current students or if the students had left the institution.
 * CASE statements in Tableau were used to define the student group as CS students if CS had been their original major or their first major.
-* Calculations were added in Tableau to define the length between original major date and graduation date.  
+* Calculations were added in Tableau to define the length between original major date and graduation date. Aditional modifications and preparation of the data sets happend in R. Detailes can be found in all the attached R files.
 
 After modifications the finished data sets consisted of the fallowing variables:  
 #### Data Set 1
@@ -86,6 +86,14 @@ Two.MATH201              : num  2011 2012 NA 2010 NA ...
 Two.MATH112              : num  2009 2010 2013 2009 2009 ...  
 One.MATH111              : num  2009 2009 2013 2009 2009 ...  
 One.CSCI101              : num  NA NA NA NA NA ...  
+
+### Process for project/Major tools used
+
+This project was completed utilizing:
+* IBM Cognos -  to query the University data base and produce seven different csv files from different tables.
+* Tableau – to clean, format, and combine csv files into two main files. Data was pivoted and summarized to produce the desire order of variables and information.
+* R – Used to modify, and analyze the two main data sets. R files are located at:
+* A youtube presentation is located at: 
 
 # EDA (Exploratory Data Analysis)
 ## Data Preparation and EDA
