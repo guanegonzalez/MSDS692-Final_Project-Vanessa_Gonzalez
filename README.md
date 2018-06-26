@@ -1052,6 +1052,22 @@ The analysis for last CS highest course taken by students was done in three diff
 
 # Conclusions
 
+536 Students were registered with a CS first major in the 2008-2014 time frame. By Spring 2018,73.88% of those students graduated, 20.15% left the institution and 5.97% left the CS program and graduated from a different major and 32% of the students are still registered in the CS program.
+
+It is important to predict which students are at risk of not graduating in 4 years, of leaving the program, or of leaving the institution and provide the additional support needed to increase the four-year graduation rate. The produced model can be ran when students are in their 5th semester of the Computer Science program and predict if the student will graduate in four years or not graduate in four years with a 78.2% accuracy.
+
+Considering that the no information rate was 71.8% it is an acceptable result with a Kappa of 0.40. I would like to see a higher accuracy but even if just one extra student is detected, helped, and graduates on time it would be a success.
+
+With the second data set it was found that most students that leave the program do so after taking the CSCS261 course. This information provides insight to the Computer Science Department on doing additional research to figure out why this is. By modifying the class or provide students with additional help on this course student retention may increase.
+
+It was interesting to find the main course variables that affect the 4-year graduation rate and how they correlate with each other. Some CECS courses were important as expected but the MATH201 statistics class was found to be important by every method and we really do not know why this is. Additional research should be done to figure out the reason.
+
+As any other analysis, while some questions were answered, new questions arise. It would be interesting to apply this same model to other course sequences in other majors and see what the results look like.
+
+
+
+
+
 # References 
 link to video etc.
 
