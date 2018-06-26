@@ -238,6 +238,7 @@ Take a look at the data.
 ```{r}
 summary(CourseDateDataNoCS)
 ```
+![image3](/images/SummaryLastClass.png)
 ```{r}
 str(CourseDateDataNoCS)
 ```
