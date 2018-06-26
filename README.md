@@ -26,7 +26,7 @@ Further changes and cleaning were necessary:
 * Double majors had to be cleaned to show just the CS record.
 * Several CASE statements in Tableau were used to define depending registration in Spring 18 and Fall 18 if the students were current students or if the students had left the institution.
 * CASE statements in Tableau were used to define the student group as CS students if CS had been their original major or their first major.
-* Calculations were added in Tableau to define the length between original major date and graduation date. Aditional modifications and preparation of the data sets happend in R. Detailes can be found in all the attached R files.
+* Calculations were added in Tableau to define the length between original major date and graduation date. Additional modifications and preparation of the data sets happened in R. Details can be found in all the attached R files.
 
 After modifications the finished data sets consisted of the fallowing variables:  
 #### Data Set 1
