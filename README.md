@@ -360,7 +360,8 @@ library(corrplot)
 ```{r}
 corrplot(cor(dfDataSet4YGImpute[-(1)], method = 'spearman', use = "complete.obs"))
 ```
-![Image4](CorrelationBetweenVariablesPlot.png). 
+![image4](/images/CorrelationPlot.png). 
+
 To determine variables with a correlation higher than 0.5.
 ```{r}
 highlyCorrelated <- findCorrelation(res, cutoff=0.5)
