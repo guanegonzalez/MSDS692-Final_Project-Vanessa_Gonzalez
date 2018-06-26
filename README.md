@@ -834,7 +834,7 @@ Top 10 variables
 ```{r}
 str(LessVariablesSet)
 ```
-#### Random Forest model with les variables
+#### Random Forest model with less variables
 ```{r}
 FourYG.rf.Less <- randomForest(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406+Eight.CSCI400+Eight.CSCI442  , data = trainingLess)
 FourYG.rf.Less
