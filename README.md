@@ -590,7 +590,7 @@ Several Libraries were used to perform this task:
 
 Three main models were used to determine variable importance, to train, and test the model.
 
-* Regresion Partition with method "class". 
+* Regression Partition with method "class". 
 * Random Forest model. 
 * Logistic Regresion.  
 80% of the data was used as the training set and 20% of the data was used as the testing set.
@@ -623,7 +623,7 @@ training
 testing
 ```
 
-#### Regresion Partition with method "class".
+#### Regression Partition with method "class".
 ```{r}
 FourYG.rp = rpart(FourYG ~ ., data=training, method = "class")
 FourYG.rp
@@ -775,7 +775,7 @@ testingLess
 
 ```
 
-#### Regresion Partition with method "class" for set with less variables
+#### Regression Partition with method "class" for set with less variables
 ```{r}
 FourYG.rp.Less = rpart(FourYG ~ ., data=trainingLess, method = "class")
 FourYG.rp.Less
@@ -858,7 +858,7 @@ varImpPlot(FourYG.rf.Less)
 ```{r}
 confusionMatrix(table(FourYG.rf.prediction.Less, testingLess$FourYG))
 ```
-#### Logistic Regresion with less variables
+#### Logistic Regression with less variables
 
 ```{r}
 # Template code
@@ -916,7 +916,7 @@ testingLess.Sem5
 
 ```
 
-#### Regresion Partition with method "class" for less variables for 5th semester courses.
+#### Regression Partition with method "class" for less variables for 5th semester courses.
 ```{r}
 FourYG.rp.Less.Sem5 = rpart(FourYG ~ ., data=trainingLess.Sem5, method = "class")
 FourYG.rp.Less.Sem5
@@ -1018,7 +1018,7 @@ gbmImp.Less.Sem5
 # Analysis Results
 Results were produced for Regresion Partition with all variables, after pruning, and Random Forest for three data sets:  
 ## All courses variables
-### Regresion Partition with method "class".
+### Regression Partition with method "class".
 ![image5](/images/RegressionAllV.png)
 ### Pruned Tree
 ![image6](/images/PruneAll.png)
@@ -1026,7 +1026,7 @@ Results were produced for Regresion Partition with all variables, after pruning,
 ![image7](/images/RFAll.png)
 ![image8](/images/RFAllPlot.png)
 ## Less Course Variables
-### Regresion Partition with method "class".
+### Regression Partition with method "class".
 ![image9](/images/RpartLess.png)
 ### Pruned Tree
 ![image10](/images/PruneLess.png)
