@@ -18,7 +18,7 @@ We will try to answer the following questions:
 
 The data used was extracted from the University Database using IBM Cognos as the tool to query the database. Data from 2008 to 2018 was used. Two data sets were created; One with grades for courses in the math and CS sequences all CS students are required to take for graduation, and another set with the dates when these courses were taken. Both data sets also contained variables describing if the students graduated from CS or if they left the program. A variable was included to describe if the students graduated in four years from CS or if they changed major from the major they changed to.
 
-### Observations on the Quality and cleaning of the Data
+### Observations on the Quality and Cleaning of the Data
 It was observed in both data sets that to show all the variables needed more than one table from the database was needed. Not all tables resided in the same Cognos packages so further mergers were necessary. Merges were performed utilizing Tableau with the student ID as the item for linking the separate data files. 
 Further changes and cleaning were necessary:
 * Academic period format had to be changed from year-period to year-month.
@@ -87,7 +87,7 @@ Two.MATH112              : num  2009 2010 2013 2009 2009 ...
 One.MATH111              : num  2009 2009 2013 2009 2009 ...  
 One.CSCI101              : num  NA NA NA NA NA ...  
 
-### Process for project/Major tools used
+### Process for Project and Major Tools Used
 
 This project was completed utilizing:
 * IBM Cognos -  to query the University data base and produce seven different csv files from different tables.
@@ -115,6 +115,8 @@ head(dfDataSet)
 ```{r}
 summary(dfDataSet)
 ```
+![image1](/images/SummarydfDataset.png)
+
 Transform Variable's type to the appropriate data type
 ```{r}
 dfDataSet[1] <- lapply(dfDataSet[1], as.integer)
@@ -152,7 +154,8 @@ Create a Pie chart
 ```{r}
 pie(tb, main = "CS Students Status that Started 2008-2014", col = c("Light Blue","Navy Blue","Dark Orange"))
 ```
-![](CS Students Status Pie.png)
+![image](/images/CSStudentStatusPie.png). 
+
 Create a Bar chart
 ```{r}
 barplot(tb, col = "navy blue", ylim=c(0,400),main = "Computer Science Students who Started the Program (2008-2014)")
