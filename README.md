@@ -1069,7 +1069,9 @@ As any other analysis, while some questions were answered, new questions arise. 
 
 
 # References 
-link to video etc.
+Github: [1] (https://github.com/guanegonzalez/MSDS692-Final-Project)
+
+
 
 
 
