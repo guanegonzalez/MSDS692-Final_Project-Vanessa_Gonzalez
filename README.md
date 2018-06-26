@@ -1040,13 +1040,21 @@ Plot of importance of variables.
 ### Random Forest
 ![image14](/images/FifthYearRF.png)
 
+### Last course taken by students that left the program
+The analysis for last CS highest course taken by students was done in three different data sets:
+### All Students that left the CS program
+![image15](/images/AllStudentsLeft.png)
+### Students that left the institution
+![image16](/images/LeftInst.png)
+### Students that went to other majors in the same institution
+![image17](/images/OtherMajor.png)
+
 
 # Conclusions
 
 # References 
 link to video etc.
 
-images: ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
-![image](/images/CSStudentStatusPie.png)
+
 
 
