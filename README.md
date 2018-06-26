@@ -878,7 +878,7 @@ gbmImp.Less
 
 Once the highest accuracy was achieved then courses from higher semesters were removed one by one while keeping a similar accuracy to when all courses were used. This was done with the purpose of predicting students at risk as soon as possible while they go through the CS class sequence. Courses taken generally on the 6th, 7th, and 8th semesters were able to be taken out to build a 5th semester model of students at risk.
 
-### Prediction of Students at Risk on Semester 5"
+### Prediction of Students at Risk on Fifth Semester
 ```{r}
 colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
 LessVariablesSet.Sem5 <- dfDataSet4YGImpute
@@ -1015,9 +1015,30 @@ gbmImp.Less.Sem5 <- varImp(FourYG.rf.Less.Sem5, scale = FALSE)
 gbmImp.Less.Sem5
 ```
 
-
-
-
+# Analysis Results
+Results were produced for Regresion Partition with all variables, after pruning, and Random Forest for three data sets:  
+## All courses variables
+### Regresion Partition with method "class".
+![image5](/images/RegressionAllV.png)
+### Pruned Tree
+![image6](/images/PruneAll.png)
+### Random Forest
+![image7](/images/RFAll.png)
+![image8](/images/RFAllPlot.png)
+## Less Course Variables
+### Regresion Partition with method "class".
+![image9](/images/RpartLess.png)
+### Pruned Tree
+![image10](/images/PruneLess.png)
+Importance of varialbes.  
+![image11](/images/ImpVarLess.png)
+Plot of importance of variables.  
+![image12](/images/ImpVarPlot.png)
+### Random Forest
+![image13](/images/RFLess.png)
+## 5th Semester Variables
+### Random Forest
+![image14](/images/FifthYearRF.png)
 
 
 # Conclusions
