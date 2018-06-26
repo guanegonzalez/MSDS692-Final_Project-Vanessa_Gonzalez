@@ -117,7 +117,7 @@ summary(dfDataSet)
 ```
 ![image1](/images/SummarydfDataset.png)
 
-Transform Variable's type to the appropriate data type
+Transform Variable's type to the appropriate data type.
 ```{r}
 dfDataSet[1] <- lapply(dfDataSet[1], as.integer)
 dfDataSet[3] <- lapply(dfDataSet[3], as.numeric)
@@ -129,19 +129,19 @@ str(dfDataSet)
 ```{r}
 summary(dfDataSet)
 ```
-Transform data frame into a table
+Transform data frame into a table.
 ```{r}
 tbDataSet <- data.table(dfDataSet)
 tbDataSet
 
 ```
-Create a table for variable "GraduationStatus"
+Create a table for variable "GraduationStatus".
 ```{r}
 tb <- table(dfDataSet$GraduationStatus)
 tb
 
 ```
-Create table with percentages of total
+Create table with percentages of total.
 ```{r}
 tb.prop <- dfDataSet$GraduationStatus %>%
    table() %>%
@@ -150,71 +150,72 @@ tb.prop <- dfDataSet$GraduationStatus %>%
 
 tb.prop
 ```
-Create a Pie chart
+Create a Pie chart.
 ```{r}
 pie(tb, main = "CS Students Status that Started 2008-2014", col = c("Light Blue","Navy Blue","Dark Orange"))
 ```
 ![image](/images/CSStudentStatusPie.png). 
 
-Create a Bar chart
+Create a Bar chart.
 ```{r}
 barplot(tb, col = "navy blue", ylim=c(0,400),main = "Computer Science Students who Started the Program (2008-2014)")
 ```
 
-Create a Bar plot where the "graduated"" students are divided into CS and Other Major students
+Create a Bar plot where the "graduated"" students are divided into CS and Other Major students.
 ```{r}
 ggplot(dfDataSet) + 
   geom_bar(aes(x = factor(GraduationStatus), fill = CsGrad), position = 'dodge') +
   xlab('Graduation Status') + ylab('Frequency')
 ```
-Create a plot to represent the CS students that have graduated in 4 years
+![image2](/images/BarChart.png)
+Create a plot to represent the CS students that have graduated in 4 years.
 ```{r}
 ggplot(dfDataSet) + 
   geom_bar(aes(x = factor(GraduationStatus), fill = dfDataSet$"4YG"), position = 'dodge') +
   xlab('Graduation Status') + ylab('Frequency')
 ```
-Create a table of numbers and percetages of students that graduate in 4 years
+Create a table of numbers and percetages of students that graduate in 4 years.
 ```{r}
 tb4YG <- table(dfDataSet$"4YG")
 tb4YGpercent <- prop.table(tb4YG)
 tb4YGpercent
 cbind(tb4YG,prop.table(tb4YG))
 ```
-Create a Pie Chart for Four-year graduation rate
+Create a Pie Chart for Four-year graduation rate.
 ```{r}
 pie(tb4YG, main = "CS Students that Graduated in Four Years", col = c("Light Blue","Navy Blue","Dark Orange"))
 ```
-Create a Bar chart for Four-year graduation rate
+Create a Bar chart for Four-year graduation rate.
 ```{r}
 barplot(tb4YGpercent, col = "navy blue", ylim=c(0,1),main = "Four Year Graduation Rate for CS Students who Started on 2008-2014")
 ```
-Create a table of numbers and percetages of students that graduate in 5 years
+Create a table of numbers and percetages of students that graduate in 5 years.
 ```{r}
 tb5YG <- table(dfDataSet$"5YG")
 tb5YGpercent <- prop.table(tb5YG)
 tb5YGpercent
 cbind(tb5YG,prop.table(tb5YG))
 ```
-Create a Pie Chart for Five-year graduation rate
+Create a Pie Chart for Five-year graduation rate.
 ```{r}
 pie(tb5YG, main = "CS Students that Graduated in Five Years", col = c("Light Blue","Navy Blue","Dark Orange"))
 ```
-Create a Bar Chart for Five-year graduation rate
+Create a Bar Chart for Five-year graduation rate.
 ```{r}
 barplot(tb5YGpercent, col = "lightblue", ylim=c(0,1),main = "Five Year Graduation Rate for CS Students who Started on 2008-2014")
 ```
-Create a table of numbers and percetages of students that graduate in 6 years
+Create a table of numbers and percetages of students that graduate in 6 years.
 ```{r}
 tb6YG <- table(dfDataSet$"6YG")
 tb6YGpercent <- prop.table(tb6YG)
 tb6YGpercent
 cbind(tb6YG,prop.table(tb6YG))
 ```
-Create a Pie Chart for Five-year graduation rate
+Create a Pie Chart for Five-year graduation rate.
 ```{r}
 pie(tb6YG, main = "CS Students that Graduated in Six Years", col = c("Light Blue","Navy Blue","Dark Orange"))
 ```
-Create a Bar Chart for Six-year graduation rate
+Create a Bar Chart for Six-year graduation rate.
 ```{r}
 barplot(tb6YGpercent, col = "navy blue", ylim=c(0,1), main = "Six Year Graduation Rate for CS Students who Started on 2008-2014")
 ```
@@ -240,7 +241,7 @@ summary(CourseDateDataNoCS)
 ```{r}
 str(CourseDateDataNoCS)
 ```
-Remove unecesary columns
+Remove unecesary columns.
 ```{r}
 DataNoCS <- CourseDateDataNoCS[-(1:6)]
 str(DataNoCS)
@@ -278,7 +279,7 @@ head(dfCourseDates)
 ```{r}
 summary(dfCourseDates)
 ```
-Open additional libraries
+Open additional libraries.
 ```{r}
 library(caret)
 library(lattice)
@@ -351,14 +352,14 @@ str(DataSet4YGImpute)
 ```{r}
 dfDataSet4YGImpute <-as.data.frame(DataSet4YGImpute)
 ```
-Create a correlation plot between variables
+Create a correlation plot between variables.
 ```{r}
 library(corrplot)
 ```
 ```{r}
 corrplot(cor(dfDataSet4YGImpute[-(1)], method = 'spearman', use = "complete.obs"))
 ```
-To determine variables with a correlation higher than 0.5
+To determine variables with a correlation higher than 0.5.
 ```{r}
 highlyCorrelated <- findCorrelation(res, cutoff=0.5)
 print(highlyCorrelated)
@@ -375,7 +376,7 @@ NG - Not Graduated
 
 Data from 2008-2018 and excludes current students and students that graduated from CS or that left the University.
 
-Import Data Set
+Import Data Set.
 ```{r}
 library(readxl)
 CourseDateData <- read_excel("CourseDateData.xlsx")
@@ -423,7 +424,7 @@ str(JustOM)
 
 ```
 
-Replace NA with 0
+Replace NA with 0.
 ```{r}
 JustOM[is.na(JustOM)] <- 0
 head(JustOM)
