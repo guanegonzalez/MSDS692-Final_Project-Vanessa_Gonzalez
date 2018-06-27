@@ -1063,7 +1063,7 @@ Plot of importance of variables.
 ![image13](/images/RFLess.png)
 ## 5th Semester Variables
 ### Random Forest
-![image14](/images/FifthYearRF.png)
+![image14](/images/FifthSemRF.png)
 
 ### Last course taken by students that left the program
 The analysis for last CS highest course taken by students was done in three different data sets:
@@ -1079,9 +1079,9 @@ The analysis for last CS highest course taken by students was done in three diff
 
 536 Students were registered with a CS first major in the 2008-2014 time frame. By Spring 2018,73.88% of those students graduated, 20.15% left the institution and 5.97% left the CS program and graduated from a different major and 32% of the students are still registered in the CS program.
 
-It is important to predict which students are at risk of not graduating in 4 years, of leaving the program, or of leaving the institution and provide the additional support needed to increase the four-year graduation rate. The produced model can be ran when students are in their 5th semester of the Computer Science program and predict if the student will graduate in four years or not graduate in four years with a 78.2% accuracy.
+It is important to predict which students are at risk of not graduating in 4 years, of leaving the program, or of leaving the institution and provide the additional support needed to increase the four-year graduation rate. The produced model can be ran when students are in their 5th semester of the Computer Science program and predict if the student will graduate in four years or not graduate in four years with a 75.74% accuracy.
 
-Considering that the no information rate was 71.8% it is an acceptable result with a Kappa of 0.40. I would like to see a higher accuracy but even if just one extra student is detected, helped, and graduates on time it would be a success.
+Considering that the no information rate was 71.8% it is an acceptable result with a Kappa of 0.37. I would like to see a higher accuracy but even if just one extra student is detected, helped, and graduates on time it would be a success.
 
 With the second data set it was found that most students that leave the program do so after taking the CSCS261 course. This information provides insight to the Computer Science Department on doing additional research to figure out why this is. By modifying the class or provide students with additional help on this course student retention may increase.
 
