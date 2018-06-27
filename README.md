@@ -11,7 +11,7 @@ A variety of factors influence the student decision to leave or change major but
 
 We will try to answer the following questions:
 
-*	What students are at risk at the start of a course to make sure we address their needs and provide support proactively?
+* Which students are at risk at the start of a course to make sure we address their needs and provide support proactively?
 * Which are the main points of attrition in the CS course sequence conducive to the loss of students from the CS program or University?
 
 ### Data Sets
