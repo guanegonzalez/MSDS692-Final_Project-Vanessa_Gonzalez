@@ -1062,6 +1062,7 @@ Plot of importance of variables.
 ### Random Forest
 ![image13](/images/RFLess.png)
 ## 5th Semester Variables
+![image18](/images/VarPlot.png)
 ### Random Forest
 ![image14](/images/FifthSemRF.png)
 
@@ -1077,17 +1078,20 @@ The analysis for last CS highest course taken by students was done in three diff
 
 # Conclusions
 
-536 Students were registered with a CS first major in the 2008-2014 time frame. By Spring 2018,73.88% of those students graduated, 20.15% left the institution and 5.97% left the CS program and graduated from a different major and 32% of the students are still registered in the CS program.
+536 Students were registered with a CS first major in the 2008-2014 time frame. By Spring 2018, 73.88% of those students graduated, 20.15% left the institution and 5.97% left the CS program and graduated from a different major.
 
-It is important to predict which students are at risk of not graduating in 4 years, of leaving the program, or of leaving the institution and provide the additional support needed to increase the four-year graduation rate. The produced model can be ran when students are in their 5th semester of the Computer Science program and predict if the student will graduate in four years or not graduate in four years with a 75.74% accuracy.
+It is important to predict which students are at risk of not graduating in 4 years, of leaving the program, or of leaving the institution and provide the additional support needed to increase the four-year graduation rate. The produced model can be applied when students are starting their 6th semester of the Computer Science program and predict if the student will graduate in four years or not graduate in four years with a 75.74% accuracy.
 
 Considering that the no information rate was 71.8% it is an acceptable result with a Kappa of 0.37. I would like to see a higher accuracy but even if just one extra student is detected, helped, and graduates on time it would be a success.
 
-With the second data set it was found that most students that leave the program do so after taking the CSCS261 course. This information provides insight to the Computer Science Department on doing additional research to figure out why this is. By modifying the class or provide students with additional help on this course student retention may increase.
+There is a strong correlation between different CS courses in the sequence but was interesting to find a strong correlation of the MATH201 (Statistics Course) with so may of the CS courses.
+
+With the second data set it was found that most students that leave the program do so after taking the CSCI261 course fallowed by CSCI442, CSCI358, and CSCI262. This information provides insight to the Computer Science Department on doing additional research to figure out why this is. By modifying the class or provide students with additional help on this course student retention may increase.
 
 It was interesting to find the main course variables that affect the 4-year graduation rate and how they correlate with each other. Some CECS courses were important as expected but the MATH201 statistics class was found to be important by every method and we really do not know why this is. Additional research should be done to figure out the reason.
 
-As any other analysis, while some questions were answered, new questions arise. It would be interesting to apply this same model to other course sequences in other majors and see what the results look like.
+There is a lot more to be done. More questions to to be answered and other angles to be explored. It would be interesting to add more variables to our data set including gender, nationality, instate or out of state tuition, and race.
+It would also be interesting to apply the same model and process to other programs course sequences and reach out to students at risk to provide them with additional support.
 
 
 
@@ -1095,11 +1099,9 @@ As any other analysis, while some questions were answered, new questions arise. 
 
 # References 
 Github: [1] (https://github.com/guanegonzalez/MSDS692-Final-Project). 
-
-
 Github R PDF Files: [2] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/R_PDF_Files). 
-
 Github R RMD Files: [3] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/rmd_files). 
+
 
 
 
