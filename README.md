@@ -1095,7 +1095,8 @@ As any other analysis, while some questions were answered, new questions arise. 
 
 # References 
 Github: [1] (https://github.com/guanegonzalez/MSDS692-Final-Project)
-PDF Files: [2] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/R_PDF_Files)
+Github R PDF Files: [2] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/R_PDF_Files)
+Github R RMD Files: [3] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/rmd_files)
 
 
 
