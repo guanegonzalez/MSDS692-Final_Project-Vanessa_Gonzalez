@@ -878,7 +878,29 @@ gbmImp.Less
 
 Once the highest accuracy was achieved then courses from higher semesters were removed one by one while keeping a similar accuracy to when all courses were used. This was done with the purpose of predicting students at risk as soon as possible while they go through the CS class sequence. Courses taken generally on the 6th, 7th, and 8th semesters were able to be taken out to build a 5th semester model of students at risk.
 
-### Prediction of Students at Risk on Fifth Semester
+#### Prediction of Students at Risk on Fifth Semester
+---
+title: "Prediction of Students at Risk on 5th Semester"
+author: "Vanessa Gonzalez"
+date: "`r format(Sys.Date())`"
+output: html_notebook
+---
+
+Open Libraries.
+```{r}
+library("mlbench")
+library("caret")
+library("randomForest")
+library("lattice")
+library("ggplot2")
+library("rpart")
+library("e1071")
+library("caret", lib.loc="/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
+```
+
+
+### Random Forest model using less variables for semester 5
+
 ```{r}
 colnames(dfDataSet4YGImpute) <- c("FourYG", "One.CSCI101","One.MATH111","Two.CSCI261","Two.MATH112","Two.MATH201","Three.CSCI262","Three.MATH213","Four.CSCI341","Four.CSCI358","Four.MATH225","Five.CSCI306","Five.CSCI403","Five.MATH332","Six.CSCI406","Seven.CSCI370","Eight.CSCI400","Eight.CSCI442")
 LessVariablesSet.Sem5 <- dfDataSet4YGImpute
@@ -895,9 +917,10 @@ LessVariablesSet.Sem5 <- LessVariablesSet[-(3)]
 LessVariablesSet.Sem5 <- LessVariablesSet[-(5)]
 LessVariablesSet.Sem5 <- LessVariablesSet[-(7)]
 LessVariablesSet.Sem5 <- LessVariablesSet[-(11)]
+LessVariablesSet.Sem5 <- LessVariablesSet[-(10:12)]
 
-LessVariablesSet.Sem5 <- LessVariablesSet[-(11:12)]
 str(LessVariablesSet.Sem5)
+
 ```
 ```{r}
 # Creates Training data Set
@@ -916,7 +939,7 @@ testingLess.Sem5
 
 ```
 
-#### Regression Partition with method "class" for less variables for 5th semester courses.
+### Regresion Partition with method "class" for less variables for 5th semester courses.
 ```{r}
 FourYG.rp.Less.Sem5 = rpart(FourYG ~ ., data=trainingLess.Sem5, method = "class")
 FourYG.rp.Less.Sem5
@@ -950,7 +973,7 @@ which.min(FourYG.rp.Less.Sem5$cptable[,"xerror"])
 ```
 Get the cost complecity parameter of the record
 ```{r}
-FourYG.cp.Less.Sem5 = FourYG.rp.Less.Sem5$cptable[1,"CP"]
+FourYG.cp.Less.Sem5 = FourYG.rp.Less.Sem5$cptable[2,"CP"]
 FourYG.cp.Less.Sem5
 
 ```
@@ -972,10 +995,10 @@ Top 10 variables
 ```{r}
 str(LessVariablesSet.Sem5)
 ```
-#### Random Forest method with less variables on 5th semester.
+### Random Forest method with less variables on 5th semester.
 Training
 ```{r}
-FourYG.rf.Less.Sem5 <- randomForest(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406 , data = trainingLess.Sem5)
+FourYG.rf.Less.Sem5 <- randomForest(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332 , data = trainingLess.Sem5)
 FourYG.rf.Less.Sem5
 ```
 Prediction
@@ -997,13 +1020,13 @@ Confusion Matrix
 ```{r}
 confusionMatrix(table(FourYG.rf.prediction.Less.Sem5, testingLess.Sem5$FourYG))
 ```
-#### Logistic Regression method for variable importance
+### Logistic Regression method for variable importance
 
 ```{r}
 # Template code
 # Step 1: Build Logit Model on Training Dataset
 
-FourYG.lr.Less.Sem5 <- glm(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332+Six.CSCI406, family= "binomial", data = trainingLess.Sem5)
+FourYG.lr.Less.Sem5 <- glm(FourYG ~Two.CSCI261+Two.MATH201+Four.CSCI341+Four.CSCI358+Five.CSCI306+Five.CSCI403+Five.MATH332, family= "binomial", data = trainingLess.Sem5)
 FourYG.lr.Less.Sem5
 
 # Step 2: Predict Y on Test Dataset
@@ -1014,6 +1037,8 @@ Variable Importance
 gbmImp.Less.Sem5 <- varImp(FourYG.rf.Less.Sem5, scale = FALSE)
 gbmImp.Less.Sem5
 ```
+
+
 
 # Analysis Results
 Results were produced for Regresion Partition with all variables, after pruning, and Random Forest for three data sets:  
