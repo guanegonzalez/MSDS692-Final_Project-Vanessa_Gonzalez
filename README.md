@@ -1098,10 +1098,15 @@ It would also be interesting to apply the same model and process to other progra
 
 
 # References 
-Github: [1] (https://github.com/guanegonzalez/MSDS692-Final-Project). 
-Github R PDF Files: [2] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/R_PDF_Files). 
-Github R RMD Files: [3] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/rmd_files). 
-Github Presentation in PDf: [4] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/Presentations)
+Github: [1] (https://github.com/guanegonzalez/MSDS692-Final-Project).   
+
+Github R PDF Files: [2] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/R_PDF_Files).   
+
+Github R RMD Files: [3] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/rmd_files).   
+
+Github Presentation in PDf: [4] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/Presentations). 
+
+Youtube Presentation: [5] (https://youtu.be/eOgN_IJm3YI)
 
 
 
