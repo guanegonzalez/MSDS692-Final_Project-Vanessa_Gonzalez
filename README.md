@@ -156,7 +156,7 @@ Models were created using all courses variables and then subsequently variables 
 * Random Forest model with less variables
 * Logistic Regression with less variables
 
-#### Prediction of Students at Risk on Fifth Semester
+### Prediction of Students at Risk on Fifth Semester
 
 * Random Forest model using less variables for semester 5
 * Regresion Partition with method "class" for less variables for 5th semester courses.
@@ -166,36 +166,36 @@ Models were created using all courses variables and then subsequently variables 
 # Analysis Results
 Results were produced for Regresion Partition with all variables, after pruning, and Random Forest for three data sets:  
 ## All courses variables
-### Regression Partition with method "class".
+#### Regression Partition with method "class".
 ![image5](/images/RegressionAllV.png)
-### Pruned Tree
+#### Pruned Tree
 ![image6](/images/PruneAll.png)
-### Random Forest
+#### Random Forest
 ![image7](/images/RFAll.png)
 ![image8](/images/RFAllPlot.png)
 ## Less Course Variables
-### Regression Partition with method "class".
+#### Regression Partition with method "class".
 ![image9](/images/RpartLess.png)
-### Pruned Tree
+#### Pruned Tree
 ![image10](/images/PruneLess.png)
 Importance of varialbes.  
 ![image11](/images/ImpVarLess.png)
 Plot of importance of variables.  
 ![image12](/images/ImpVarPlot.png)
-### Random Forest
+#### Random Forest
 ![image13](/images/RFLess.png)
 ## 5th Semester Variables
 ![image18](/images/VarPlot.png)
-### Random Forest
+#### Random Forest
 ![image14](/images/FifthSemRF.png)
 
-### Last course taken by students that left the program
+#### Last course taken by students that left the program
 The analysis for last CS highest course taken by students was done in three different data sets:
-### All Students that left the CS program
+#### All Students that left the CS program
 ![image15](/images/AllStudentsLeft.png)
-### Students that left the institution
+#### Students that left the institution
 ![image16](/images/LeftInst.png)
-### Students that went to other majors in the same institution
+#### Students that went to other majors in the same institution
 ![image17](/images/OtherMajor.png)
 
 
