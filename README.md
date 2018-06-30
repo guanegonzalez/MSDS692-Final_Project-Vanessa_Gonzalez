@@ -189,7 +189,7 @@ Plot of importance of variables.
 ![image14](/images/FifthSemRF.png). 
 ![image18](/images/VarPlot.png). 
 
-#### Last course taken by students that left the program
+## Last course taken by students that left the program
 The analysis for last CS highest course taken by students was done in three different data sets:
 #### All Students that left the CS program
 ![image15](/images/AllStudentsLeft.png)
