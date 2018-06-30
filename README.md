@@ -427,12 +427,6 @@ gbmImp.Less
 Once the highest accuracy was achieved then courses from higher semesters were removed one by one while keeping a similar accuracy to when all courses were used. This was done with the purpose of predicting students at risk as soon as possible while they go through the CS class sequence. Courses taken generally on the 6th, 7th, and 8th semesters were able to be taken out to build a 5th semester model of students at risk.
 
 #### Prediction of Students at Risk on Fifth Semester
----
-title: "Prediction of Students at Risk on 5th Semester"
-author: "Vanessa Gonzalez"
-date: "`r format(Sys.Date())`"
-output: html_notebook
----
 
 Open Libraries.
 ```{r}
