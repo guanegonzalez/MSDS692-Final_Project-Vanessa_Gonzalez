@@ -229,7 +229,7 @@ Github R RMD Files: [3] (https://github.com/guanegonzalez/MSDS692-Final_Project-
 
 Github Presentation in PDf: [4] (https://github.com/guanegonzalez/MSDS692-Final_Project-Vanessa_Gonzalez/tree/master/Presentations). 
 
-Youtube Presentation: [5] (https://youtu.be/fKe-7vCn1j8)
+Youtube Presentation: [5] (https://youtu.be/eOgN_IJm3YI)
 
 
 
